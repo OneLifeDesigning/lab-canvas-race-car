@@ -29,12 +29,8 @@ class Game {
             }
         })
         document.addEventListener('keyup', () => {
-            if (event.keyCode === KEY_LEFT) {
-                this._car.ax = 0
-                this._car.vx = 0
-            } else if (event.keyCode === KEY_RIGHT) {
-                this._car.ax = 0
-                this._car.vx = 0
+            if (event.keyCode === KEY_LEFT || event.keyCode === KEY_RIGHT) {
+                this._car.stop()
             }
         })
     }

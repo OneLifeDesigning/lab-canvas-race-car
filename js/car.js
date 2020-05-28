@@ -30,18 +30,21 @@ class Car {
     }
 
     move() {
-        if (this.ax >= 2) {
-            this.ax = 0
-        }
         this.vx += this.ax
         this.x += this.vx
 
         if (this.x <= 0) {
+            this.stop()
             this.x = 0
         }
         if (this.x + this.w >= this._ctx.canvas.width) {
             this.x = this._ctx.canvas.width - this.w
         }
+    }
+
+    stop() {
+        this.vx = 0
+        this.ax = 0
     }
 
 }
