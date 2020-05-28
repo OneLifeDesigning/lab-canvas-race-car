@@ -42,25 +42,29 @@ class Game {
         return OBSTACLES_OBJECT[Math.floor(Math.random() * (OBSTACLES_OBJECT.length))]
     }
     _randomPosition(w) {
-        return (((this._ctx.canvas.width / 2) * (Math.floor(Math.random() * 2) + 1)) - (OUT_ROAD * 1.5 + w))
+        return ((this._ctx.canvas.width / 2) - (OUT_ROAD + w)) * (Math.floor(Math.random() * 3) + 1)
     }
     _generateObstacles() {
-        if (this._frames++ >= 200) {
+        if (this._frames++ >= 300) {
             let selectObstacle = this._randomObstacle()
             let w = selectObstacle.w
             let h = selectObstacle.h
             let src = selectObstacle.src
             let vy = selectObstacle.vy
             let x = this._randomPosition(w)
-            let y = 0 - h
+            let y = 0 - h * 3
             this._obstacles.push(new Obstacle(this._ctx, w, h, x, y, vy, src))
             this._frames = 0
         }
     }
     _updateObstacles() {
         for (let i = 0; i < this._obstacles.length; i++) {
-            this._obstacles[i].draw();
-            this._obstacles[i].move();
+            if (this._obstacles[i].y >= this._ctx.canvas.height) {
+                this._obstacles.slice(1, i)
+            } else {
+                this._obstacles[i].draw()
+                this._obstacles[i].move()
+            }
         }
     }
 

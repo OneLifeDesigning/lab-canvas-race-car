@@ -36,11 +36,11 @@ class Car {
         this.vx += this.ax
         this.x += this.vx
 
-        if (this.x - OUT_ROAD <= 0) {
-            this.x = OUT_ROAD
+        if (this.x <= 0) {
+            this.x = 0
         }
-        if (this.x + this.w >= this._ctx.canvas.width - OUT_ROAD) {
-            this.x = this._ctx.canvas.width - this.w - OUT_ROAD
+        if (this.x + this.w >= this._ctx.canvas.width) {
+            this.x = this._ctx.canvas.width - this.w
         }
     }
 
