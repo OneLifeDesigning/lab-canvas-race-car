@@ -4,7 +4,7 @@ class Car {
 
         this.w = 100
         this.h = 202
-        this.y0 = this._ctx.canvas.height - (this.h + (this.h / 3))
+        this.y0 = this._ctx.canvas.height - (this.h + (this.h / 10))
 
         this.x = (this._ctx.canvas.width - this.w) / 2
         this.y = this.y0

@@ -3,10 +3,11 @@ class Game {
         this._ctx = ctx
 
         this._intervalId = null
+        this._frames = 0
 
-        this._bg = new Background(ctx)
+        this._road = new Road(ctx)
         this._car = new Car(ctx)
-        this._obstacles = new Obstacles(ctx)
+        this._obstacles = []
     }
 
     start() {
@@ -14,7 +15,53 @@ class Game {
             this._clear()
             this._draw()
             this._move()
+            this._generateObstacles()
+            this._updateObstacles()
         }, 1000 / 60);
+    }
+
+    getListeners() {
+        document.addEventListener('keydown', () => {
+            if (event.keyCode === KEY_LEFT) {
+                this._car.ax -= SPEED_TURN
+            } else if (event.keyCode === KEY_RIGHT) {
+                this._car.ax += SPEED_TURN
+            }
+        })
+        document.addEventListener('keyup', () => {
+            if (event.keyCode === KEY_LEFT) {
+                this._car.ax = 0
+                this._car.vx = 0
+            } else if (event.keyCode === KEY_RIGHT) {
+                this._car.ax = 0
+                this._car.vx = 0
+            }
+        })
+    }
+    _randomObstacle() {
+        return OBSTACLES_OBJECT[Math.floor(Math.random() * (OBSTACLES_OBJECT.length))]
+    }
+    _randomPosition(w) {
+        return (((this._ctx.canvas.width / 2) * (Math.floor(Math.random() * 2) + 1)) - (OUT_ROAD * 1.5 + w))
+    }
+    _generateObstacles() {
+        if (this._frames++ >= 200) {
+            let selectObstacle = this._randomObstacle()
+            let w = selectObstacle.w
+            let h = selectObstacle.h
+            let src = selectObstacle.src
+            let vy = selectObstacle.vy
+            let x = this._randomPosition(w)
+            let y = 0 - h
+            this._obstacles.push(new Obstacle(this._ctx, w, h, x, y, vy, src))
+            this._frames = 0
+        }
+    }
+    _updateObstacles() {
+        for (let i = 0; i < this._obstacles.length; i++) {
+            this._obstacles[i].draw();
+            this._obstacles[i].move();
+        }
     }
 
     _clear() {
@@ -22,14 +69,12 @@ class Game {
     }
 
     _draw() {
-        this._bg.draw()
+        this._road.draw()
         this._car.draw()
-        this._obstacles.draw()
     }
 
     _move() {
-        this._bg.move()
+        this._road.move()
         this._car.move()
-        this._obstacles.move()
     }
 }
